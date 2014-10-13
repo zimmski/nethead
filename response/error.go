@@ -2,6 +2,7 @@ package response
 
 import (
 	encodingJSON "encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -17,6 +18,12 @@ var _ Responder = (*erro)(nil)
 func NewError(err error) *erro {
 	return &erro{
 		err: err,
+	}
+}
+
+func NewErrorString(s string) *erro {
+	return &erro{
+		err: errors.New(s),
 	}
 }
 
@@ -58,22 +65,22 @@ func (r *erro) Respond(w http.ResponseWriter) {
 	w.Write(ret)
 }
 
-type errors struct {
+type erros struct {
 	errs []*netheadErrors.Error
 }
 
-var _ Responder = (*errors)(nil)
+var _ Responder = (*erros)(nil)
 
-func NewErrors(errs []*netheadErrors.Error) *errors {
-	return &errors{
+func Newerros(errs []*netheadErrors.Error) *erros {
+	return &erros{
 		errs: errs,
 	}
 }
 
-func (r *errors) Respond(w http.ResponseWriter) {
+func (r *erros) Respond(w http.ResponseWriter) {
 	status := http.StatusBadRequest
 	body := map[string]interface{}{
-		"errors": r.errs,
+		"erros": r.errs,
 	}
 
 	ret, err := encodingJSON.Marshal(body)
