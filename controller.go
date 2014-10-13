@@ -1,7 +1,6 @@
 package nethead
 
 import (
-	"github.com/zimmski/nethead/response"
 	"net/http"
 )
 
@@ -10,23 +9,23 @@ type Controller interface {
 }
 
 type AllController interface {
-	All(ctx *Context, req *http.Request) response.Responder
+	All(ctx *Context, req *http.Request) interface{}
 }
 
 type CreateController interface {
-	Create(ctx *Context, req *http.Request) response.Responder
-	CreateForm(ctx *Context, req *http.Request) response.Responder
+	Create(ctx *Context, req *http.Request) interface{}
+	CreateForm(ctx *Context, req *http.Request) interface{}
 }
 
 type DeleteController interface {
-	Delete(ctx *Context, req *http.Request) response.Responder
+	Delete(ctx *Context, req *http.Request) interface{}
 }
 
 type EditController interface {
-	Edit(ctx *Context, req *http.Request) response.Responder
-	EditForm(ctx *Context, req *http.Request) response.Responder
+	Edit(ctx *Context, req *http.Request) interface{}
+	EditForm(ctx *Context, req *http.Request) interface{}
 }
 
 type OneController interface {
-	One(ctx *Context, req *http.Request) response.Responder
+	One(ctx *Context, req *http.Request) interface{}
 }

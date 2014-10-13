@@ -24,9 +24,16 @@ func New(router *mux.Router) *Context {
 	}
 }
 
-func handleResponse(ctx *Context, r func(ctx *Context, req *http.Request) response.Responder) func(w http.ResponseWriter, req *http.Request) {
+func handleResponse(ctx *Context, r func(ctx *Context, req *http.Request) interface{}) func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
-		r(ctx, req).Respond(w)
+		ret := r(ctx, req)
+
+		switch resp := ret.(type) {
+		case response.Responder:
+			resp.Respond(w)
+		default:
+			response.NewJSON(ret).Respond(w)
+		}
 	}
 }
 
