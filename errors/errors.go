@@ -1,4 +1,4 @@
-package nethead
+package errors
 
 import (
 	"fmt"

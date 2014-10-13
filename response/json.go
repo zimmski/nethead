@@ -18,10 +18,7 @@ func NewJSON(data interface{}) *json {
 }
 
 func (r *json) Respond(w http.ResponseWriter) {
-	ret, err := encodingJSON.Marshal(map[string]interface{}{
-		"success": true,
-		"data":    r.data,
-	})
+	ret, err := encodingJSON.Marshal(r.data)
 	if err != nil {
 		ret = []byte(err.Error())
 	}

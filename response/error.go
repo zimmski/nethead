@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/zimmski/nethead"
+	netheadErrors "github.com/zimmski/nethead/errors"
 )
 
 type erro struct {
@@ -28,9 +28,9 @@ func (r *erro) response() (int, map[string]string) {
 	}
 
 	switch err := r.err.(type) {
-	case *nethead.Error:
+	case *netheadErrors.Error:
 		switch err.Type {
-		case nethead.NotFound:
+		case netheadErrors.NotFound:
 			status = http.StatusNotFound
 			body["error"] = err.Type.String()
 			body["message"] = err.Message
@@ -59,19 +59,19 @@ func (r *erro) Respond(w http.ResponseWriter) {
 }
 
 type errors struct {
-	errs []*nethead.Error
+	errs []*netheadErrors.Error
 }
 
 var _ Responder = (*errors)(nil)
 
-func NewErrors(errs []*nethead.Error) *errors {
+func NewErrors(errs []*netheadErrors.Error) *errors {
 	return &errors{
 		errs: errs,
 	}
 }
 
 func (r *errors) Respond(w http.ResponseWriter) {
-	status := http.StatusInternalServerError
+	status := http.StatusBadRequest
 	body := map[string]interface{}{
 		"errors": r.errs,
 	}
